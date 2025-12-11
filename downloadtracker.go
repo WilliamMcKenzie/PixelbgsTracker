@@ -12,7 +12,7 @@ func download(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/download", download)
 
-	fmt.Println("Listening on port 8080")
+	fmt.Println("Listening on port 80")
 
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":80", nil)
 }
