@@ -6,12 +6,13 @@ import (
 )
 
 func download(w http.ResponseWriter, r *http.Request) {
-	data := []byte{}
-	n, _ := (r.Body).Read(data)
-	fmt.Println(string(data), n)
+	fmt.Println("Connection recieved!")
 }
 
 func main() {
 	http.HandleFunc("/download", download)
+
+	fmt.Println("Listening on port 8080")
+
 	http.ListenAndServe(":8080", nil)
 }
