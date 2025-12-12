@@ -8,6 +8,12 @@ import (
 	"strconv"
 )
 
+func enableCors(w http.ResponseWriter) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+}
+
 func download(w http.ResponseWriter, r *http.Request) {
 	data, err := os.ReadFile("downloads.txt")
 
@@ -19,7 +25,7 @@ func download(w http.ResponseWriter, r *http.Request) {
 	dls, _ := strconv.Atoi(string(data))
 
 	os.WriteFile("downloads.txt", []byte(strconv.Itoa(dls+1)), 0666)
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	enableCors(w)
 	w.Write([]byte(strconv.Itoa(dls)))
 
 	fmt.Println("New download")
@@ -34,7 +40,7 @@ func getDownloads(w http.ResponseWriter, r *http.Request) {
 	}
 
 	dls, _ := strconv.Atoi(string(data))
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	enableCors(w)
 	w.Write([]byte(strconv.Itoa(dls)))
 
 	fmt.Println("Requested DLs")
