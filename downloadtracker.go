@@ -19,6 +19,10 @@ func download(w http.ResponseWriter, r *http.Request) {
 	dls, _ := strconv.Atoi(string(data))
 
 	os.WriteFile("downloads.txt", []byte(strconv.Itoa(dls+1)), 0666)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Write([]byte(strconv.Itoa(dls)))
+
+	fmt.Println("New download")
 }
 
 func getDownloads(w http.ResponseWriter, r *http.Request) {
@@ -30,7 +34,10 @@ func getDownloads(w http.ResponseWriter, r *http.Request) {
 	}
 
 	dls, _ := strconv.Atoi(string(data))
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Write([]byte(strconv.Itoa(dls)))
+
+	fmt.Println("Requested DLs")
 }
 
 func main() {
