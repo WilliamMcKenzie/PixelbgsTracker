@@ -12,10 +12,16 @@ func enableCors(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-	w.Header().Set("Content-Type", "application/json")
 }
 
 func download(w http.ResponseWriter, r *http.Request) {
+	enableCors(w)
+
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
 	data, err := os.ReadFile("downloads.txt")
 
 	if err != nil {
@@ -24,15 +30,22 @@ func download(w http.ResponseWriter, r *http.Request) {
 	}
 
 	dls, _ := strconv.Atoi(string(data))
-
 	os.WriteFile("downloads.txt", []byte(strconv.Itoa(dls+1)), 0666)
-	enableCors(w)
+
+	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte(strconv.Itoa(dls)))
 
 	fmt.Println("New download")
 }
 
 func getDownloads(w http.ResponseWriter, r *http.Request) {
+	enableCors(w)
+
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
 	data, err := os.ReadFile("downloads.txt")
 
 	if err != nil {
@@ -41,7 +54,8 @@ func getDownloads(w http.ResponseWriter, r *http.Request) {
 	}
 
 	dls, _ := strconv.Atoi(string(data))
-	enableCors(w)
+
+	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte(strconv.Itoa(dls)))
 
 	fmt.Println("Requested DLs")
